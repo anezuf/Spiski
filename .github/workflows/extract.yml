@@ -1,19 +1,21 @@
 name: Extract domains
 on:
   schedule:
-    - cron: '0 3 * * 1'  # каждый понедельник
+    - cron: '0 3 * * 1'
   workflow_dispatch:
+
+permissions:
+  contents: write
 
 jobs:
   extract:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
-      
+      - uses: actions/checkout@v4
+
       - name: Download and extract
         run: |
           wget -qO dlc.yml https://github.com/v2fly/domain-list-community/releases/latest/download/dlc.dat_plain.yml
-          
           mkdir -p lists/
           for cat in anthropic openai google apple microsoft cloudflare; do
             awk "/^- name: ${cat}$/,/^- name: /" dlc.yml \
@@ -21,7 +23,7 @@ jobs:
               | sed 's/.*"domain://;s/"//' \
               > lists/${cat}.lst
           done
-          
+
       - name: Commit
         run: |
           git config user.email "bot@bot"
