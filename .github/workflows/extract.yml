@@ -1,0 +1,29 @@
+name: Extract domains
+on:
+  schedule:
+    - cron: '0 3 * * 1'  # каждый понедельник
+  workflow_dispatch:
+
+jobs:
+  extract:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      
+      - name: Download and extract
+        run: |
+          wget -qO dlc.yml https://github.com/v2fly/domain-list-community/releases/latest/download/dlc.dat_plain.yml
+          
+          for cat in anthropic openai google apple microsoft cloudflare; do
+            awk "/^- name: ${cat}$/,/^- name: /" dlc.yml \
+              | grep '"domain:' \
+              | sed 's/.*"domain://;s/"//' \
+              > lists/${cat}.lst
+          done
+          
+      - name: Commit
+        run: |
+          git config user.email "bot@bot"
+          git config user.name "bot"
+          git add lists/
+          git commit -m "Update lists" && git push || true
