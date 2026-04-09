@@ -2,7 +2,7 @@ import re
 import os
 
 content = open('dlc.yml').read()
-cats = ['anthropic', 'openai', 'google-gemini']
+cats = ['anthropic', 'openai', 'google-gemini', 'tiktok', 'telegram', 'instagram', 'youtube', 'supercell', 'ookla-speedtest', 'discord']
 
 os.makedirs('lists', exist_ok=True)
 os.makedirs('Stash', exist_ok=True)
