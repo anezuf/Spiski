@@ -18,10 +18,13 @@ jobs:
           wget -qO dlc.yml https://github.com/v2fly/domain-list-community/releases/latest/download/dlc.dat_plain.yml
           mkdir -p lists/
           for cat in anthropic openai google apple microsoft cloudflare; do
-            awk "/^- name: ${cat}$/,/^- name: /" dlc.yml \
-              | grep '"domain:' \
-              | sed 's/.*"domain://;s/"//' \
-              > lists/${cat}.lst
+            awk -v cat="$cat" '
+              /^- name: / { found = ($0 == "- name: " cat) }
+              found && /\"domain:/ {
+                gsub(/.*"domain:/, ""); gsub(/".*/, ""); print
+              }
+            ' dlc.yml > lists/${cat}.lst
+            echo "=== $cat: $(wc -l < lists/${cat}.lst) domains ==="
           done
 
       - name: Commit
