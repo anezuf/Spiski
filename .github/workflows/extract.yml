@@ -3,29 +3,34 @@ on:
   schedule:
     - cron: '0 3 * * 1'
   workflow_dispatch:
-
 permissions:
   contents: write
-
 jobs:
   extract:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-
       - name: Download and extract
         run: |
           wget -qO dlc.yml https://github.com/v2fly/domain-list-community/releases/latest/download/dlc.dat_plain.yml
           mkdir -p lists/
-          for cat in anthropic openai google apple microsoft cloudflare; do
-            awk -v cat="$cat" '
-              /^- name: / { found = ($0 == "- name: " cat) }
-              found && /\"domain:/ {
-                gsub(/.*"domain:/, ""); gsub(/".*/, ""); print
-              }
-            ' dlc.yml > lists/${cat}.lst
-            echo "=== $cat: $(wc -l < lists/${cat}.lst) domains ==="
-          done
+
+          python3 << 'PYEOF'
+          import re
+          content = open('dlc.yml').read()
+          cats = ['anthropic','openai','google','apple','microsoft','cloudflare']
+          for cat in cats:
+              pattern = r'- name: ' + cat + r'\n(.*?)(?=\n- name: |\Z)'
+              match = re.search(pattern, content, re.DOTALL)
+              domains = []
+              if match:
+                  for line in match.group(1).splitlines():
+                      m = re.search(r'domain:([^"]+)', line)
+                      if m:
+                          domains.append(m.group(1).strip())
+              open(f'lists/{cat}.lst', 'w').write('\n'.join(domains))
+              print(f'=== {cat}: {len(domains)} domains ===')
+          PYEOF
 
       - name: Commit
         run: |
