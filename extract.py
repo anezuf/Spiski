@@ -1,7 +1,11 @@
 import re
+import os
 
 content = open('dlc.yml').read()
-cats = ['anthropic','openai','google','cloudflare','google-gemini']
+cats = ['anthropic', 'openai', 'google', 'apple', 'microsoft', 'cloudflare', 'google-gemini']
+
+os.makedirs('lists', exist_ok=True)
+os.makedirs('Stash', exist_ok=True)
 
 for cat in cats:
     domains = []
@@ -17,5 +21,11 @@ for cat in cats:
             m = re.search(r'"domain:([^"]+)"', stripped)
             if m:
                 domains.append(m.group(1).strip())
+
     open('lists/' + cat + '.lst', 'w').write('\n'.join(domains))
+
+    stash_lines = ['payload:']
+    stash_lines += ['  - DOMAIN-SUFFIX,' + d for d in domains]
+    open('Stash/' + cat + '.list', 'w').write('\n'.join(stash_lines))
+
     print('=== ' + cat + ': ' + str(len(domains)) + ' domains ===')
