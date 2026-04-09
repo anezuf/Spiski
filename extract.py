@@ -1,7 +1,7 @@
 import re
 
 content = open('dlc.yml').read()
-cats = ['anthropic','openai','google','apple','microsoft','cloudflare']
+cats = ['anthropic','openai','google','cloudflare','google-gemini']
 
 for cat in cats:
     domains = []
