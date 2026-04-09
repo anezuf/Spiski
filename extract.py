@@ -3,7 +3,7 @@ import os
 import urllib.request
 
 content = open('dlc.yml').read()
-cats = ['anthropic', 'openai', 'google-gemini', 'tiktok', 'telegram', 'instagram', 'youtube', 'supercell', 'ookla-speedtest', 'discord']
+cats = ['anthropic', 'openai', 'google-gemini', 'tiktok', 'telegram', 'instagram', 'youtube', 'supercell', 'ookla-speedtest', 'discord', 'pinterest', 'spotify', 'soundcloud']
 
 os.makedirs('lists', exist_ok=True)
 os.makedirs('Stash', exist_ok=True)
