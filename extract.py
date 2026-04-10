@@ -87,6 +87,5 @@ deeplink = "happ://routing/onadd/" + profile_b64
 
 open('happ-routing.json', 'w').write(profile_json)
 open('happ-routing-deeplink.txt', 'w').write(deeplink)
-open('happ-subscription.txt', 'w').write(deeplink + "\n")
 
 print('=== happ: ' + str(len(happ_domains)) + ' domains, ' + str(len(tg_ips)) + ' IPs ===')
