@@ -6,10 +6,12 @@ import urllib.request
 
 content = open('dlc.yml').read()
 cats = ['category-porn', 'category-speedtest', 'anthropic', 'openai', 'google-gemini', 'tiktok', 'telegram', 'instagram', 'youtube', 'supercell', 'ookla-speedtest', 'discord', 'pinterest', 'spotify', 'soundcloud']
+happ_cats = ['anthropic', 'openai', 'google-gemini', 'tiktok', 'telegram', 'instagram', 'youtube', 'supercell', 'discord', 'pinterest', 'spotify', 'soundcloud']
+
 os.makedirs('lists', exist_ok=True)
 os.makedirs('Stash', exist_ok=True)
 
-all_domains = []  # собираем все домены для happ
+all_domains_by_cat = {}
 
 for cat in cats:
     domains = []
@@ -26,7 +28,7 @@ for cat in cats:
             if m:
                 domains.append(m.group(1).strip())
     clean_domains = [d.split(':')[0] for d in domains]
-    all_domains.extend(clean_domains)
+    all_domains_by_cat[cat] = clean_domains
     open('lists/' + cat + '.lst', 'w').write('\n'.join(clean_domains))
     stash_lines = ['payload:']
     for d in clean_domains:
@@ -44,7 +46,11 @@ open('Stash/telegram-ip.list', 'w').write('\n'.join(stash_ip_lines))
 open('lists/telegram-ip.lst', 'w').write('\n'.join(ip.strip() for ip in tg_ips))
 print('=== telegram-ip: ' + str(len(tg_ips)) + ' subnets ===')
 
-# --- Генерация happ routing профиля ---
+# --- Генерация happ routing профиля (только нужные категории) ---
+happ_domains = []
+for cat in happ_cats:
+    happ_domains.extend(all_domains_by_cat.get(cat, []))
+
 happ_profile = {
     "Name": "My Rules",
     "GlobalProxy": "false",
@@ -64,7 +70,7 @@ happ_profile = {
         "224.0.0.0/4",
         "255.255.255.255"
     ],
-    "ProxySites": ["domain:" + d for d in all_domains],
+    "ProxySites": ["domain:" + d for d in happ_domains],
     "ProxyIp": [ip.strip() for ip in tg_ips],
     "BlockSites": [],
     "BlockIp": [],
@@ -78,5 +84,6 @@ deeplink = "happ://routing/onadd/" + profile_b64
 
 open('happ-routing.json', 'w').write(profile_json)
 open('happ-routing-deeplink.txt', 'w').write(deeplink)
-print('=== happ: ' + str(len(all_domains)) + ' domains, ' + str(len(tg_ips)) + ' IPs ===')
-print('Deeplink: ' + deeplink[:80] + '...')
+open('happ-subscription.txt', 'w').write(deeplink + "\n")
+
+print('=== happ: ' + str(len(happ_domains)) + ' domains, ' + str(len(tg_ips)) + ' IPs ===')
