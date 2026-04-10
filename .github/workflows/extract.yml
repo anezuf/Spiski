@@ -10,16 +10,36 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+
+      - name: Setup Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: '1.22'
+
       - name: Download and extract
         run: |
           wget -qO dlc.yml https://github.com/v2fly/domain-list-community/releases/latest/download/dlc.dat_plain.yml
           mkdir -p lists/
           python3 extract.py
+
+      - name: Generate geosite.dat
+        run: |
+          git clone --depth=1 https://github.com/v2fly/domain-list-community.git dlc-tool
+          cp geo-data/mylist dlc-tool/data/mylist
+          cd dlc-tool
+          go run ./ --datapath=data --outputname=geosite.dat --outputdir=../
+          cd ..
+          echo "geosite.dat size: $(wc -c < geosite.dat) bytes"
+
+      - name: Generate geoip.dat
+        run: |
+          go install github.com/v2fly/geoip@latest
+          ~/go/bin/geoip -c geo-data/geoip-config.json
+          echo "geoip.dat size: $(wc -c < geoip.dat) bytes"
+
       - name: Commit
         run: |
           git config user.email "bot@bot"
           git config user.name "bot"
-          git add Stash/
-          git add lists/
-          git add happ-routing.json happ-routing-deeplink.txt
+          git add Stash/ lists/ geosite.dat geoip.dat happ-routing.json happ-routing-deeplink.txt
           git commit -m "Update lists" && git push || true
