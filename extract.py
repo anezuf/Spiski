@@ -6,12 +6,10 @@ import urllib.request
 
 content = open('dlc.yml').read()
 cats = ['category-porn', 'category-speedtest', 'anthropic', 'openai', 'google-gemini', 'tiktok', 'telegram', 'instagram', 'youtube', 'supercell', 'ookla-speedtest', 'discord', 'pinterest', 'spotify', 'soundcloud']
-happ_cats = ['anthropic', 'openai', 'google-gemini', 'tiktok', 'telegram', 'instagram', 'youtube', 'supercell', 'discord', 'pinterest', 'spotify', 'soundcloud']
-
 os.makedirs('lists', exist_ok=True)
 os.makedirs('Stash', exist_ok=True)
 
-all_domains_by_cat = {}
+all_domains = {}
 
 for cat in cats:
     domains = []
@@ -28,7 +26,7 @@ for cat in cats:
             if m:
                 domains.append(m.group(1).strip())
     clean_domains = [d.split(':')[0] for d in domains]
-    all_domains_by_cat[cat] = clean_domains
+    all_domains[cat] = clean_domains
     open('lists/' + cat + '.lst', 'w').write('\n'.join(clean_domains))
     stash_lines = ['payload:']
     for d in clean_domains:
@@ -46,10 +44,15 @@ open('Stash/telegram-ip.list', 'w').write('\n'.join(stash_ip_lines))
 open('lists/telegram-ip.lst', 'w').write('\n'.join(ip.strip() for ip in tg_ips))
 print('=== telegram-ip: ' + str(len(tg_ips)) + ' subnets ===')
 
-# --- Генерация happ routing профиля (только нужные категории) ---
+# --- Генерация happ routing профиля ---
+# Все категории КРОМЕ category-porn и category-speedtest
+happ_cats = ['anthropic', 'openai', 'google-gemini', 'tiktok', 'telegram',
+             'instagram', 'youtube', 'supercell', 'ookla-speedtest',
+             'discord', 'pinterest', 'spotify', 'soundcloud']
+
 happ_domains = []
 for cat in happ_cats:
-    happ_domains.extend(all_domains_by_cat.get(cat, []))
+    happ_domains.extend(all_domains[cat])
 
 happ_profile = {
     "Name": "My Rules",
