@@ -112,7 +112,7 @@ for cidr in tg_ips:
 
 # Собираем GeoIPList
 geoip_list = b''
-geoip_list += encode_field(1, 2, encode_geoip('telegram', telegram_cidrs))
+geoip_list += encode_field(1, 2, encode_geoip('TELEGRAM', telegram_cidrs))
 
 open('geoip.dat', 'wb').write(geoip_list)
 print('=== geoip.dat: ' + str(len(geoip_list)) + ' bytes ===')
