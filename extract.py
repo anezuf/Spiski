@@ -2,6 +2,8 @@ import re
 import os
 import json
 import base64
+import struct
+import socket
 import urllib.request
 
 content = open('dlc.yml').read()
@@ -46,15 +48,11 @@ open('Stash/telegram-ip.list', 'w').write('\n'.join(stash_ip_lines))
 open('lists/telegram-ip.lst', 'w').write('\n'.join(ip.strip() for ip in tg_ips))
 print('=== telegram-ip: ' + str(len(tg_ips)) + ' subnets ===')
 
-# --- Генерация geo-data файлов для geosite.dat и geoip.dat ---
-
-# Категории для geosite (все кроме category-porn и category-speedtest)
+# --- geo-data/mylist для geosite.dat ---
 happ_cats = ['anthropic', 'openai', 'google-gemini', 'tiktok', 'telegram',
              'instagram', 'youtube', 'supercell', 'ookla-speedtest',
              'discord', 'pinterest', 'spotify', 'soundcloud']
 
-# Файл данных для domain-list-community генератора
-# Формат: одна запись на строку, тип:значение
 mylist_lines = []
 for cat in happ_cats:
     for d in all_domains[cat]:
@@ -63,36 +61,64 @@ for cat in happ_cats:
 open('geo-data/mylist', 'w').write('\n'.join(mylist_lines))
 print('=== geo-data/mylist: ' + str(len(mylist_lines)) + ' domains ===')
 
-# Файл IP для geoip генератора (просто список CIDR)
-open('geo-data/telegram-ips.txt', 'w').write('\n'.join(ip.strip() for ip in tg_ips))
-print('=== geo-data/telegram-ips.txt: ' + str(len(tg_ips)) + ' IPs ===')
+# --- geoip.dat через Python (protobuf вручную) ---
+# Структура: GeoIPList -> GeoIP -> CIDR
+# GeoIPList { repeated GeoIP entry = 1; }
+# GeoIP { string country_code = 1; repeated CIDR cidr = 2; }
+# CIDR { bytes ip = 1; uint32 prefix = 2; }
 
-# Конфиг для v2fly/geoip
-geoip_config = {
-    "input": [
-        {
-            "type": "text",
-            "action": "add",
-            "args": {
-                "name": "telegram",
-                "uri": "geo-data/telegram-ips.txt"
-            }
-        }
-    ],
-    "output": [
-        {
-            "type": "v2rayGeoIPDat",
-            "action": "output",
-            "args": {
-                "outputName": "geoip.dat",
-                "outputDir": "./"
-            }
-        }
-    ]
-}
-open('geo-data/geoip-config.json', 'w').write(json.dumps(geoip_config, indent=2))
+def encode_varint(value):
+    bits = value & 0x7f
+    value >>= 7
+    result = b''
+    while value:
+        result += bytes([0x80 | bits])
+        bits = value & 0x7f
+        value >>= 7
+    result += bytes([bits])
+    return result
 
-# --- Маленький happ routing профиль ---
+def encode_field(field_number, wire_type, data):
+    tag = (field_number << 3) | wire_type
+    return encode_varint(tag) + data
+
+def encode_bytes(data):
+    return encode_varint(len(data)) + data
+
+def encode_string(s):
+    return encode_bytes(s.encode('utf-8'))
+
+def encode_cidr(ip_str, prefix):
+    ip_bytes = socket.inet_aton(ip_str)
+    cidr_msg = b''
+    cidr_msg += encode_field(1, 2, encode_bytes(ip_bytes))   # ip
+    cidr_msg += encode_field(2, 0, encode_varint(prefix))    # prefix
+    return encode_bytes(cidr_msg)
+
+def encode_geoip(country_code, cidrs):
+    geoip_msg = b''
+    geoip_msg += encode_field(1, 2, encode_string(country_code))  # country_code
+    for ip_str, prefix in cidrs:
+        geoip_msg += encode_field(2, 2, encode_cidr(ip_str, prefix))  # cidr
+    return encode_bytes(geoip_msg)
+
+# Парсим CIDR список Telegram
+telegram_cidrs = []
+for cidr in tg_ips:
+    cidr = cidr.strip()
+    if '/' in cidr:
+        ip_part, prefix_part = cidr.split('/')
+        telegram_cidrs.append((ip_part, int(prefix_part)))
+
+# Собираем GeoIPList
+geoip_list = b''
+geoip_list += encode_field(1, 2, encode_geoip('telegram', telegram_cidrs))
+
+open('geoip.dat', 'wb').write(geoip_list)
+print('=== geoip.dat: ' + str(len(geoip_list)) + ' bytes ===')
+
+REPO = "anezuf/Spiski"
+
 happ_profile = {
     "Name": "My Rules",
     "GlobalProxy": "false",
@@ -102,8 +128,8 @@ happ_profile = {
     "DomesticDNSType": "DoH",
     "DomesticDNSDomain": "https://dns.google/dns-query",
     "DomesticDNSIP": "8.8.8.8",
-    "Geoipurl": "https://raw.githubusercontent.com/ТВОЙ_РЕПО/main/geoip.dat",
-    "Geositeurl": "https://raw.githubusercontent.com/ТВОЙ_РЕПО/main/geosite.dat",
+    "Geoipurl": f"https://raw.githubusercontent.com/{REPO}/main/geoip.dat",
+    "Geositeurl": f"https://raw.githubusercontent.com/{REPO}/main/geosite.dat",
     "DnsHosts": {},
     "DirectSites": [],
     "DirectIp": [
@@ -130,4 +156,4 @@ open('happ-routing.json', 'w').write(profile_json)
 open('happ-routing-deeplink.txt', 'w').write(deeplink)
 
 print('=== happ deeplink length: ' + str(len(deeplink)) + ' chars ===')
-print('ВАЖНО: замени ТВОЙ_РЕПО в happ-routing.json на реальный путь к репозиторию!')
+print('ВАЖНО: замени USERNAME/REPONAME в скрипте на реальный путь!')
