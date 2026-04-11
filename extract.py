@@ -156,4 +156,3 @@ open('happ/happ-routing.json', 'w').write(profile_json)
 open('happ/happ-routing-deeplink.txt', 'w').write(deeplink)
 
 print('=== happ deeplink length: ' + str(len(deeplink)) + ' chars ===')
-print('ВАЖНО: замени USERNAME/REPONAME в скрипте на реальный путь!')
