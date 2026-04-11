@@ -50,7 +50,7 @@ open('lists/telegram-ip.lst', 'w').write('\n'.join(ip.strip() for ip in tg_ips))
 print('=== telegram-ip: ' + str(len(tg_ips)) + ' subnets ===')
 
 # --- geo-data/mylist для geosite.dat ---
-happ_cats = ['anthropic', 'openai', 'google-gemini', 'tiktok', 'telegram',
+happ_cats = ['patreon', 'anthropic', 'openai', 'google-gemini', 'tiktok', 'telegram',
              'instagram', 'youtube', 'supercell', 'ookla-speedtest',
              'discord', 'pinterest', 'spotify', 'soundcloud']
 
@@ -114,8 +114,6 @@ for cidr in tg_ips:
 # Собираем GeoIPList
 geoip_list = b''
 geoip_list += encode_field(1, 2, encode_geoip('TELEGRAM', telegram_cidrs))
-
-open('geoip.dat', 'wb').write(geoip_list)
 print('=== geoip.dat: ' + str(len(geoip_list)) + ' bytes ===')
 
 REPO = "anezuf/Spiski"
