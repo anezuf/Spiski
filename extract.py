@@ -11,6 +11,7 @@ cats = ['category-porn', 'category-speedtest', 'anthropic', 'openai', 'google-ge
 os.makedirs('lists', exist_ok=True)
 os.makedirs('Stash', exist_ok=True)
 os.makedirs('geo-data', exist_ok=True)
+os.makedirs('happ', exist_ok=True)
 
 all_domains = {}
 
@@ -152,8 +153,9 @@ profile_json = json.dumps(happ_profile, ensure_ascii=False, indent=2)
 profile_b64 = base64.b64encode(profile_json.encode()).decode()
 deeplink = "happ://routing/onadd/" + profile_b64
 
-open('happ-routing.json', 'w').write(profile_json)
-open('happ-routing-deeplink.txt', 'w').write(deeplink)
+open('happ/geoip.dat', 'wb').write(geoip_list)
+open('happ/happ-routing.json', 'w').write(profile_json)
+open('happ/happ-routing-deeplink.txt', 'w').write(deeplink)
 
 print('=== happ deeplink length: ' + str(len(deeplink)) + ' chars ===')
 print('ВАЖНО: замени USERNAME/REPONAME в скрипте на реальный путь!')
