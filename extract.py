@@ -129,8 +129,8 @@ happ_profile = {
     "DomesticDNSType": "DoH",
     "DomesticDNSDomain": "https://dns.google/dns-query",
     "DomesticDNSIP": "8.8.8.8",
-    "Geoipurl": f"https://raw.githubusercontent.com/{REPO}/main/geoip.dat",
-    "Geositeurl": f"https://raw.githubusercontent.com/{REPO}/main/geosite.dat",
+    "Geoipurl": f"https://raw.githubusercontent.com/{REPO}/main/happ/geoip.dat",
+    "Geositeurl": f"https://raw.githubusercontent.com/{REPO}/main/happ/geosite.dat",
     "DnsHosts": {},
     "DirectSites": [],
     "DirectIp": [
