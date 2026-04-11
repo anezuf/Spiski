@@ -1,0 +1,32 @@
+{
+  "Name": "My Rules",
+  "GlobalProxy": "false",
+  "RemoteDNSType": "DoH",
+  "RemoteDNSDomain": "https://cloudflare-dns.com/dns-query",
+  "RemoteDNSIP": "1.1.1.1",
+  "DomesticDNSType": "DoH",
+  "DomesticDNSDomain": "https://dns.google/dns-query",
+  "DomesticDNSIP": "8.8.8.8",
+  "Geoipurl": "https://raw.githubusercontent.com/anezuf/Spiski/main/geoip.dat",
+  "Geositeurl": "https://raw.githubusercontent.com/anezuf/Spiski/main/geosite.dat",
+  "DnsHosts": {},
+  "DirectSites": [],
+  "DirectIp": [
+    "10.0.0.0/8",
+    "172.16.0.0/12",
+    "192.168.0.0/16",
+    "169.254.0.0/16",
+    "224.0.0.0/4",
+    "255.255.255.255"
+  ],
+  "ProxySites": [
+    "geosite:mylist"
+  ],
+  "ProxyIp": [
+    "geoip:TELEGRAM"
+  ],
+  "BlockSites": [],
+  "BlockIp": [],
+  "DomainStrategy": "IPIfNonMatch",
+  "FakeDNS": "false"
+}
