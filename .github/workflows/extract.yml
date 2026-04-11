@@ -24,15 +24,15 @@ jobs:
 
       - name: Generate geosite.dat (only mylist)
         run: |
+          mkdir -p happ/
           git clone --depth=1 https://github.com/v2fly/domain-list-community.git dlc-tool
-          # Удаляем все стандартные списки, оставляем только наш mylist
           rm -rf dlc-tool/data
           mkdir -p dlc-tool/data
           cp geo-data/mylist dlc-tool/data/mylist
           cd dlc-tool
           go run ./ --datapath=data --outputname=geosite.dat --outputdir=../happ/
           cd ..
-          echo "geosite.dat size: $(wc -c < geosite.dat) bytes"
+          echo "geosite.dat size: $(wc -c < happ/geosite.dat) bytes"
 
       - name: Commit
         run: |
