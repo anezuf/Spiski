@@ -38,5 +38,5 @@ jobs:
         run: |
           git config user.email "bot@bot"
           git config user.name "bot"
-          git add Stash/ lists/ geosite.dat geoip.dat happ-routing.json happ-routing-deeplink.txt
+          git add Stash/ lists/ happ/
           git commit -m "Update lists" && git push || true
