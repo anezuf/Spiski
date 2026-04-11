@@ -23,7 +23,7 @@
     "geosite:mylist"
   ],
   "ProxyIp": [
-    "geoip:telegram"
+    "geoip:TELEGRAM"
   ],
   "BlockSites": [],
   "BlockIp": [],
