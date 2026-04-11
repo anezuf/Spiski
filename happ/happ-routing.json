@@ -7,8 +7,8 @@
   "DomesticDNSType": "DoH",
   "DomesticDNSDomain": "https://dns.google/dns-query",
   "DomesticDNSIP": "8.8.8.8",
-  "Geoipurl": "https://raw.githubusercontent.com/anezuf/Spiski/main/geoip.dat",
-  "Geositeurl": "https://raw.githubusercontent.com/anezuf/Spiski/main/geosite.dat",
+  "Geoipurl": f"https://raw.githubusercontent.com/{REPO}/main/happ/geoip.dat",
+  "Geositeurl": f"https://raw.githubusercontent.com/{REPO}/main/happ/geosite.dat",
   "DnsHosts": {},
   "DirectSites": [],
   "DirectIp": [
