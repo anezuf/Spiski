@@ -141,7 +141,7 @@ happ_profile = {
         "255.255.255.255"
     ],
     "ProxySites": ["geosite:mylist"],
-    "ProxyIp": ["geoip:telegram"],
+    "ProxyIp": ["geoip:TELEGRAM"],
     "BlockSites": [],
     "BlockIp": [],
     "DomainStrategy": "IPIfNonMatch",
