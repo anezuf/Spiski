@@ -30,7 +30,7 @@ jobs:
           mkdir -p dlc-tool/data
           cp geo-data/mylist dlc-tool/data/mylist
           cd dlc-tool
-          go run ./ --datapath=data --outputname=geosite.dat --outputdir=../
+          go run ./ --datapath=data --outputname=geosite.dat --outputdir=../happ/
           cd ..
           echo "geosite.dat size: $(wc -c < geosite.dat) bytes"
 
