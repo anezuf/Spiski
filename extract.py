@@ -7,7 +7,7 @@ import socket
 import urllib.request
 
 content = open('dlc.yml').read()
-cats = ['rutracker','category-porn', 'category-speedtest', 'anthropic', 'openai', 'google-gemini', 'tiktok', 'telegram', 'instagram', 'youtube', 'supercell', 'ookla-speedtest', 'discord', 'pinterest', 'spotify', 'soundcloud']
+cats = ['twitter','rutracker','category-porn', 'category-speedtest', 'anthropic', 'openai', 'google-gemini', 'tiktok', 'telegram', 'instagram', 'youtube', 'supercell', 'ookla-speedtest', 'discord', 'pinterest', 'spotify', 'soundcloud']
 os.makedirs('lists', exist_ok=True)
 os.makedirs('Stash', exist_ok=True)
 os.makedirs('geo-data', exist_ok=True)
@@ -50,7 +50,7 @@ open('lists/telegram-ip.lst', 'w').write('\n'.join(ip.strip() for ip in tg_ips))
 print('=== telegram-ip: ' + str(len(tg_ips)) + ' subnets ===')
 
 # --- geo-data/mylist для geosite.dat ---
-happ_cats = ['rutracker','anthropic', 'openai', 'google-gemini', 'tiktok', 'telegram',
+happ_cats = ['twitter', 'rutracker','anthropic', 'openai', 'google-gemini', 'tiktok', 'telegram',
              'instagram', 'youtube', 'supercell', 'ookla-speedtest',
              'discord', 'pinterest', 'spotify', 'soundcloud']
 
