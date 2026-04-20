@@ -51,7 +51,7 @@ print('=== telegram-ip: ' + str(len(tg_ips)) + ' subnets ===')
 
 # --- geo-data/mylist для geosite.dat ---
 happ_cats = ['cursor','microsoft','twitter', 'rutracker','anthropic', 'openai', 'google-gemini', 'tiktok', 'telegram',
-             'instagram', 'youtube', 'supercell', 'ookla-speedtest',
+             'instagram', 'youtube', 'supercell', 'category-speedtest',
              'discord', 'pinterest', 'spotify', 'soundcloud']
 
 mylist_lines = []
