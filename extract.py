@@ -20,7 +20,7 @@ for cat in cats:
     in_section = False
     for line in content.splitlines():
         stripped = line.strip()
-        if stripped == '- name: ' + cat:
+        if re.match(r'^- name:\s*"?' + re.escape(cat) + r'"?\s*$', stripped):
             in_section = True
             continue
         if in_section:
