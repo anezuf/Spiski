@@ -7,7 +7,7 @@ import socket
 import urllib.request
 
 content = open('dlc.yml').read()
-cats = ['kinopub','threads','forza', 'cursor','microsoft','twitter','rutracker','category-porn', 'category-speedtest', 'anthropic', 'openai', 'google-gemini', 'tiktok', 'telegram', 'instagram', 'youtube', 'supercell', 'discord', 'pinterest', 'spotify', 'soundcloud']
+cats = ['threads','forza', 'cursor','microsoft','twitter','rutracker','category-porn', 'category-speedtest', 'anthropic', 'openai', 'google-gemini', 'tiktok', 'telegram', 'instagram', 'youtube', 'supercell', 'discord', 'pinterest', 'spotify', 'soundcloud']
 os.makedirs('lists', exist_ok=True)
 os.makedirs('Stash', exist_ok=True)
 os.makedirs('geo-data', exist_ok=True)
