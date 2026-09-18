@@ -1,18 +1,30 @@
 payload:
   - DOMAIN-SUFFIX,ahc.ovh
   - DOMAIN-SUFFIX,api.alador.space
+  - DOMAIN-SUFFIX,api.ios-kp.store
+  - DOMAIN-SUFFIX,api.srvkp.com
   - DOMAIN-SUFFIX,cdn-service.space
   - DOMAIN-SUFFIX,cdn2cdn.com
   - DOMAIN-SUFFIX,cdn2site.com
+  - DOMAIN-SUFFIX,cdn32.lol
+  - DOMAIN-SUFFIX,cdn4t.xyz
+  - DOMAIN-SUFFIX,cdntogo.net
+  - DOMAIN-SUFFIX,digital-cdn.net
+  - DOMAIN-SUFFIX,flexcdn.cloud
   - DOMAIN-SUFFIX,gfw.ovh
+  - DOMAIN-SUFFIX,i0.wp.com
+  - DOMAIN-SUFFIX,iptv.online
   - DOMAIN-SUFFIX,kino.pub
   - DOMAIN-SUFFIX,kino.watch
   - DOMAIN-SUFFIX,kinopub.online
   - DOMAIN-SUFFIX,kpdl.link
-  - DOMAIN-SUFFIX,m.alador.space
+  - DOMAIN-SUFFIX,m.pushbr.com
+  - DOMAIN-SUFFIX,media.service-kp.com
   - DOMAIN-SUFFIX,mos-gorsud.co
+  - DOMAIN-SUFFIX,mycdn.video
+  - DOMAIN-SUFFIX,proxykp.xyz
   - DOMAIN-SUFFIX,pushbr.com
+  - DOMAIN-SUFFIX,smarttv.zeasn.tv
   - DOMAIN-SUFFIX,smarttvcdn.online
-  - DOMAIN-SUFFIX,support-kp.com
   - DOMAIN-SUFFIX,teleos.club
-  - DOMAIN-SUFFIX,tsx.ovh
+  - DOMAIN-SUFFIX,themoviedb.org
